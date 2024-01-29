@@ -14,7 +14,7 @@
 <th>Nom</th>
 <th>Prenom</th>
 <th>Email</th>
-<th>Fichier</th>
+<th>Photo</th>
 <th></th>
 <th></th>
 </tr>
@@ -24,8 +24,8 @@
 <td>{{ et.nom }}</td>
 <td>{{ et.prenom }}</td>
 <td>{{ et.email }}</td>
-<td>{{ et.fichier }}</td>
-<td><img src="/uploads/{{ et.fichier }}" width="50" height="50"/></td>
+<td><img src="{{ asset('uploads/' ~ et.fichier) }}" width="50" height="50" alt="Image {{ et.fichier }}" title="Image {{ et.fichier }}"/></td>
+<td><img src="/uploads/{{ et.fichier }}" width="50" height="50" alt="Image {{ et.fichier }}" title="Image {{ et.fichier }}"/></td>
 <td><a href="/modEtudiant/{{ et.id }}" class="btn btn-warning">Modifier</a></td>
 <td><a href="/delEtudiant/{{ et.id }}" class="btn btn-danger">Supprimer</a></td>
 </tr>
