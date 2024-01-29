@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List Etudiants !{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div>
+<table>
+<tr>
+<th>ID</th>
+<th>Nom</th>
+<th>Prenom</th>
+<th>Email</th>
+<th>Fichier</th>
+<th></th>
+<th></th>
+</tr>
+{% for et in etudiants %}
+<tr>
+<td>{{ et.id }}</td>
+<td>{{ et.nom }}</td>
+<td>{{ et.prenom }}</td>
+<td>{{ et.email }}</td>
+<td>{{ et.fichier }}</td>
+<td><a href="/modEtudiant/{{ et.id }}" class="btn btn-warning">Modifier</a></td>
+<td><a href="/delEtudiant/{{ et.id }}" class="btn btn-danger">Supprimer</a></td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<p><a href="/addEtudiant" class="btn btn-success">Add Etudiant</a></p>
+<p><a href="/">Go Home</a></p>
+{% endblock %}

@@ -3,7 +3,11 @@
 {% block title %}Add Etudiant{% endblock %}
 
 {% block body %}
-<h1>Add Etudiant</h1>
+{% if app.request.pathinfo starts with '/modEtudiant' %}
+<h1>Modifier Etudiant</h1>
+{% else %}
+<h1>Ajouter Etudiant</h1>
+{% endif %}
 <div class="col-6 offset-3 bg-dark">
 {{ form(f) }}
 </div>

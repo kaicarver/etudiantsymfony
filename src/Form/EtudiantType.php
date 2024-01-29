@@ -39,7 +39,7 @@ class EtudiantType extends AbstractType
                 ])
             ->add('save', SubmitType::class, [
                 "attr"=>["class"=>"btn btn-primary mt-2 mb-3","id"=>"save"],
-                "label"=>"Ajouter",
+                "label"=>"Sauvegarder",
                 ])
         ;
     }

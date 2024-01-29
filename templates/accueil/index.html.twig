@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page Accueil{% endblock %}
+{% block title %}Hello APP ETUDIANTS !{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" href={{ asset('css/style.css') }}
 {% endblock %}
@@ -9,7 +9,6 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-
 
 <div class="example-wrapper">
 
@@ -21,6 +20,7 @@
     <hr>
     <div><a href="/etudiant">/etudiant</a></div>
     <div><a href="/addEtudiant">/addEtudiant</a></div>
+    <div><a href="/listEtudiant">/listEtudiant</a></div>
     <hr>
     <div>Copyright {{ "now" | date("Y", 'Europe/Paris') }}</div>
 
