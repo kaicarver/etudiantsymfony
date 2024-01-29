@@ -48,13 +48,25 @@ class EtudiantController extends AbstractController
         ]);
     }
     #[Route('/editEtudiant', name: 'edit_etudiant')]
-    public function editEtudiant(ManagerRegistry $doctrine, Request $request): Response
+    public function editEtudiant(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $em = $doctrine->getManager();
         $et = new Etudiant();
         $form = $this->createForm(EtudiantType::class, $et);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->get('fichier')->getData();
+            if ($photo) {
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photo->guessExtension();
+                $photo->move(
+                    $this->getParameter('etudiant_directory'),
+                    $newFilename
+                );
+                $et->setFichier($newFilename);
+            }
+            $em = $doctrine->getManager();
             $em->persist($et);
             $em->flush();
             return $this->redirectToRoute('list_etudiant');
@@ -64,12 +76,23 @@ class EtudiantController extends AbstractController
         ]);
     }
     #[Route('/modEtudiant/{id}', name: 'mod_etudiant')]
-    public function modEtudiant(ManagerRegistry $doctrine, Etudiant $et, Request $request): Response
+    public function modEtudiant(ManagerRegistry $doctrine, Etudiant $et, Request $request, SluggerInterface $slugger): Response
     {
-        $em = $doctrine->getManager();
         $form = $this->createForm(EtudiantType::class, $et);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->get('fichier')->getData();
+            if ($photo) {
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photo->guessExtension();
+                $photo->move(
+                    $this->getParameter('etudiant_directory'),
+                    $newFilename
+                );
+                $et->setFichier($newFilename);
+            }           
+            $em = $doctrine->getManager();
             $em->persist($et);
             $em->flush();
             return $this->redirectToRoute('list_etudiant');
