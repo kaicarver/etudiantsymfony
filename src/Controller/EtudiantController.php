@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Etudiant;
 use App\Form\EtudiantType;
 
@@ -20,13 +21,24 @@ class EtudiantController extends AbstractController
         ]);
     }
     #[Route('/addEtudiant', name: 'add_etudiant')]
-    public function addEtudiant(ManagerRegistry $doctrine, Request $request): Response
+    public function addEtudiant(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
-        $em = $doctrine->getManager();
         $et = new Etudiant();
         $form = $this->createForm(EtudiantType::class, $et);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->get('fichier')->getData();
+            if ($photo) {
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photo->guessExtension();
+                $photo->move(
+                    $this->getParameter('etudiant_directory'),
+                    $newFilename
+                );
+                $et->setFichier($newFilename);
+            }
+            $em = $doctrine->getManager();
             $em->persist($et);
             $em->flush();
             return $this->redirectToRoute('list_etudiant');

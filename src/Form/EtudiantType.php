@@ -10,7 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 //use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class EtudiantType extends AbstractType
 {
@@ -36,6 +37,24 @@ class EtudiantType extends AbstractType
                 "attr"=>["class"=>"form-control","id"=>"nomet"], 
                 "label"=>"Fichier",
                 "label_attr"=>["class"=>"mt-2 text-white"],
+                ])
+            ->add('fichier', FileType::class, [
+                    'label' => 'Photo de la personne',
+                    'mapped' => false,
+                    'required' => false,
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '1024k',
+                            'mimeTypes' => [
+                                'image/gif',
+                                'image/jpeg',
+                                'image/png',
+                                'image/jpg',
+                                'application/pdf',
+                            ],
+                            'mimeTypesMessage' => 'Please upload a valid img document',
+                        ])
+                    ],
                 ])
             ->add('save', SubmitType::class, [
                 "attr"=>["class"=>"btn btn-primary mt-2 mb-3","id"=>"save"],
